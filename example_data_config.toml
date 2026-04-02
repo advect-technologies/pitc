@@ -1,0 +1,12 @@
+[inbound]
+watch_dir = "//home/pi/daq_incoming"
+
+[[sinks]]
+name = "test_mqtt"
+type = 'mqtt'
+config.username = 'user'
+config.password = 'password'
+config.broker = 'broker-url'
+config.port = 8883
+config.tls = true
+config.fallback_topic = 'pitc/data'

@@ -1,0 +1,33 @@
+[app]
+watch_dir = "/home/pi/daq_incoming"
+read_interval = 10.0
+samples_per_batch = 3
+measurement_name = "mcc134_validation"
+
+# Global tags applied to every DataPoint
+[global_tags]
+environment = "lab"
+
+[[boards]]
+address = 0
+tags = { location = "test_rig", zone = "main" }
+
+  [[boards.channels]]
+  channel = 0
+  tc_type = "K"
+  tags = { sensor_id = "tc_front_left", position = "inlet" }
+
+  [[boards.channels]]
+  channel = 1
+  tc_type = "K"
+  tags = { sensor_id = "tc_front_right", position = "outlet" }
+
+  [[boards.channels]]
+  channel = 2
+  tc_type = "K"
+  tags = { sensor_id = "tc_rear_left" }
+
+  [[boards.channels]]
+  channel = 3
+  tc_type = "K"
+  tags = { sensor_id = "tc_rear_right" }
