@@ -125,21 +125,29 @@ async def main():
                         ch = ch_cfg["channel"]
                         ch_tags = {**base_tags, **ch_cfg.get("tags", {}), "channel": ch}
 
+                        temperature: float | None = None
+                        error_code: int = 0   # 0 = good
+
                         try:
                             temp = board.t_in_read(ch)
                             if temp == mcc134.OPEN_TC_VALUE:
-                                temperature = None
+                                error_code = 1
+                            elif temp == mcc134.OVERRANGE_TC_VALUE:
+                                error_code = 2
+                            elif temp == mcc134.COMMON_MODE_TC_VALUE:
+                                error_code = 3
                             else:
                                 temperature = round(float(temp), 2)
                         except Exception as e:
+                            error_code = 99
                             logger.warning(f"Read error on board {board_info['address']} ch{ch}: {e}")
-                            temperature = None
 
                         dp = DataPoint(
                             time=sample_time,
                             measurement=measurement_name,
                             tags=ch_tags,
-                            fields={"temperature": temperature}
+                            fields={"temperature": temperature,
+                                    "error_code":error_code}
                         )
                         batch.append(dp)
 

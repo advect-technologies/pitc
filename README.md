@@ -124,10 +124,22 @@ uv run python main.py
 
 ## Notes
 
-- Open thermocouples are reported as `null` to prevent false spikes in dashboards.
+- Open thermocouples and other erroneous readings (see below) are reported as `null` to prevent false spikes in dashboards.
 - The service uses `uv run`, so it automatically manages dependencies.
 - Logs are sent to `journalctl` for easy viewing and monitoring.
 
 ---
+
+## Error Codes
+
+The `error_code` field is always included in every DataPoint:
+
+| Code | Name                        | Meaning |
+|------|-----------------------------|---------|
+| 0    | Good                        | Valid temperature reading |
+| 1    | Open TC                     | Thermocouple disconnected or broken |
+| 2    | Overrange                   | Temperature outside measurable range |
+| 3    | Common Mode Error           | Common-mode voltage / noise issue |
+| 99   | Unexpected Error            | Hardware read exception |
 
 **Advect Technologies** – Built with `daq-tools`
